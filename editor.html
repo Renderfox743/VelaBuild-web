@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>VelaBuild - Editor</title>
+    <title>VelaBuild - Editor (fixed)</title>
     <style>
         :root {
             --primary: #FF6B35;
@@ -58,6 +58,7 @@
             font-weight: bold;
             color: var(--primary);
             text-decoration: none;
+            letter-spacing: 0.5px;
         }
 
         .logo span {
@@ -73,42 +74,42 @@
 
         .header-right {
             display: flex;
-            gap: 0.5rem;
+            gap: 0.6rem;
             align-items: center;
         }
 
         .btn {
-            padding: 0.5rem 1rem;
+            padding: 0.5rem 1.2rem;
             border-radius: 6px;
             border: none;
             cursor: pointer;
             font-size: 0.85rem;
             font-weight: 500;
-            transition: all 0.3s;
+            transition: all 0.25s;
             text-decoration: none;
             display: inline-flex;
             align-items: center;
             gap: 0.5rem;
-        }
-
-        .btn-primary {
-            background: var(--gradient);
-            color: white;
-        }
-
-        .btn-primary:hover {
-            transform: translateY(-1px);
-            box-shadow: 0 4px 15px rgba(255, 107, 53, 0.4);
-        }
-
-        .btn-secondary {
             background: var(--bg-card);
             color: var(--text-secondary);
             border: 1px solid var(--border);
         }
 
+        .btn-primary {
+            background: var(--gradient);
+            color: white;
+            border: none;
+            box-shadow: 0 4px 10px rgba(255, 107, 53, 0.2);
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 8px 18px rgba(255, 107, 53, 0.4);
+        }
+
         .btn-secondary:hover {
             color: var(--text-primary);
+            background: #22222e;
         }
 
         .main-container {
@@ -120,39 +121,41 @@
         .sidebar {
             background: var(--bg-sidebar);
             border-right: 1px solid var(--border);
-            width: 250px;
-            min-width: 250px;
+            width: 270px;
+            min-width: 270px;
             display: flex;
             flex-direction: column;
             overflow-y: auto;
         }
 
         .sidebar-header {
-            padding: 1rem;
+            padding: 1.2rem 1rem;
             border-bottom: 1px solid var(--border);
             font-weight: 600;
-            font-size: 0.9rem;
-            color: var(--text-secondary);
+            font-size: 0.8rem;
+            color: var(--text-muted);
             text-transform: uppercase;
-            letter-spacing: 0.5px;
+            letter-spacing: 1px;
         }
 
         .file-tree {
-            padding: 0.5rem;
+            padding: 0.5rem 0.3rem;
             flex: 1;
         }
 
         .file-tree-item {
             display: flex;
             align-items: center;
-            gap: 0.5rem;
-            padding: 0.5rem;
-            border-radius: 4px;
+            gap: 0.6rem;
+            padding: 0.55rem 0.75rem;
+            border-radius: 6px;
             cursor: pointer;
-            transition: all 0.2s;
+            transition: background 0.15s, color 0.15s;
             font-size: 0.9rem;
             color: var(--text-secondary);
             user-select: none;
+            white-space: nowrap;
+            margin-bottom: 2px;
         }
 
         .file-tree-item:hover {
@@ -161,18 +164,23 @@
         }
 
         .file-tree-item.active {
-            background: rgba(255, 107, 53, 0.1);
+            background: rgba(255, 107, 53, 0.12);
             color: var(--primary);
-            border-left: 2px solid var(--primary);
+            font-weight: 500;
+            border-left: 3px solid var(--primary);
+            padding-left: calc(0.75rem - 3px);
         }
 
         .file-tree-item .icon {
             width: 20px;
             text-align: center;
+            font-size: 1rem;
         }
 
         .file-tree-children {
-            margin-left: 1.5rem;
+            margin-left: 1.4rem;
+            border-left: 1px dashed rgba(255,255,255,0.08);
+            padding-left: 0.4rem;
         }
 
         .editor-area {
@@ -180,15 +188,16 @@
             display: flex;
             flex-direction: column;
             background: var(--bg-dark);
+            min-width: 0;
         }
 
         .breadcrumb-bar {
             background: var(--bg-header);
             border-bottom: 1px solid var(--border);
-            padding: 0.5rem 1rem;
+            padding: 0.6rem 1.2rem;
             display: flex;
             align-items: center;
-            gap: 0.5rem;
+            gap: 0.4rem;
             font-size: 0.85rem;
             color: var(--text-muted);
             flex-shrink: 0;
@@ -204,29 +213,31 @@
         }
 
         .breadcrumb-separator {
-            color: var(--text-muted);
+            color: #444;
         }
 
         .code-editor {
             flex: 1;
             padding: 1.5rem;
-            font-family: 'Monaco', 'Menlo', 'Ubuntu Mono', 'Consolas', monospace;
+            font-family: 'SF Mono', 'Monaco', 'Menlo', 'Consolas', 'Liberation Mono', monospace;
             font-size: 14px;
             line-height: 1.6;
             color: #D4D4D4;
-            background: var(--bg-dark);
+            background: #0A0A0F;
             border: none;
             resize: none;
             outline: none;
             white-space: pre;
             overflow: auto;
             tab-size: 2;
+            width: 100%;
+            caret-color: var(--primary);
         }
 
         .status-bar {
             background: var(--bg-header);
             border-top: 1px solid var(--border);
-            padding: 0.5rem 1rem;
+            padding: 0.5rem 1.2rem;
             display: flex;
             align-items: center;
             justify-content: space-between;
@@ -246,6 +257,7 @@
             height: 8px;
             border-radius: 50%;
             background: var(--success);
+            display: inline-block;
         }
 
         .status-dot.unsaved {
@@ -254,39 +266,50 @@
 
         .toast {
             position: fixed;
-            top: 70px;
+            top: 75px;
             right: 20px;
-            padding: 1rem;
+            padding: 0.9rem 1.5rem;
             border-radius: 8px;
             color: white;
-            z-index: 1000;
+            z-index: 9999;
             animation: slideIn 0.3s ease-out;
+            font-weight: 500;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.5);
+            background: #2e2e3e;
+            border-left: 4px solid var(--primary);
         }
 
-        .toast-success { background: var(--success); }
+        .toast-success { background: var(--success); border-left-color: #2e7d32; }
+        .toast-build { background: #3a3a4a; border-left-color: var(--primary); }
 
         @keyframes slideIn {
             from { transform: translateX(100%); opacity: 0; }
             to { transform: translateX(0); opacity: 1; }
         }
+
+        /* scrollbar styling */
+        ::-webkit-scrollbar { width: 8px; height: 8px; }
+        ::-webkit-scrollbar-track { background: transparent; }
+        ::-webkit-scrollbar-thumb { background: #2a2a3e; border-radius: 8px; }
+        ::-webkit-scrollbar-thumb:hover { background: #3a3a5e; }
     </style>
 </head>
 <body>
     <div class="header">
         <div class="header-left">
-            <a href="dashboard.html" class="logo">Vela<span>Build</span></a>
+            <a href="#" class="logo" onclick="return false;">Vela<span>Build</span></a>
             <span class="header-subtitle">UX compiler in the web</span>
         </div>
         <div class="header-right">
             <button class="btn btn-secondary" onclick="saveFile()">💾 Save</button>
             <button class="btn btn-primary" onclick="buildProject()">🔨 Build & Deploy</button>
-            <a href="dashboard.html" class="btn btn-secondary">Dashboard</a>
+            <a href="#" class="btn btn-secondary" onclick="return false;">Dashboard</a>
         </div>
     </div>
 
     <div class="main-container">
         <div class="sidebar">
-            <div class="sidebar-header">Project Structure</div>
+            <div class="sidebar-header">📁 Project Structure</div>
             <div class="file-tree" id="fileTree"></div>
         </div>
 
@@ -304,185 +327,265 @@
                 </div>
                 <div class="status-item">
                     <span>UX</span>
+                    <span>•</span>
                     <span>UTF-8</span>
+                    <span>•</span>
+                    <span>Ln 1, Col 1</span>
                 </div>
             </div>
         </div>
     </div>
 
     <script>
-        // Check authentication
-        const session = localStorage.getItem('velabuild_session');
-        if (!session) {
-            window.location.href = 'index.html';
-        }
+        (function() {
+            // Simple session check (non-blocking for demo)
+            const session = localStorage.getItem('velabuild_session');
+            // if (!session) { window.location.href = 'index.html'; } // disabled for standalone preview
+            
+            let currentFile = null;
+            let isModified = false;
+            let buildInProgress = false;
 
-        let currentFile = null;
-        let isModified = false;
+            // ----- MOCK PROJECT DATA (fixed structure) -----
+            const projectStructure = {
+                name: 'pages',
+                type: 'folder',
+                expanded: true,
+                children: [
+                    {
+                        name: 'index',
+                        type: 'folder',
+                        expanded: true,
+                        children: [
+                            { 
+                                name: 'index.ux', 
+                                type: 'file', 
+                                content: `<template>\n  <div class="page">\n    <text class="title">Hello World</text>\n    <text class="subtitle">Welcome to VelaBuild</text>\n  </div>\n</template>\n\n<style>\n  .page {\n    flex-direction: column;\n    justify-content: center;\n    align-items: center;\n    width: 100%;\n    height: 100%;\n    background-color: #0A0A0F;\n  }\n  .title {\n    font-size: 36px;\n    font-weight: bold;\n    color: #FF6B35;\n  }\n  .subtitle {\n    font-size: 16px;\n    color: #A0A0B8;\n    margin-top: 8px;\n  }\n</style>\n\n<script>\n  export default {\n    data: {\n      message: 'Hello from UX file'\n    },\n    onInit() {\n      console.log('Index page loaded!')\n    }\n  }\n</script>` 
+                            },
+                            { 
+                                name: 'profile.ux', 
+                                type: 'file', 
+                                content: `<template>\n  <div class="profile-page">\n    <image src="avatar.png" class="avatar" />\n    <text class="name">John Doe</text>\n  </div>\n</template>\n\n<style>\n  .profile-page {\n    flex-direction: column;\n    align-items: center;\n    padding: 20px;\n  }\n  .avatar {\n    width: 100px;\n    height: 100px;\n    border-radius: 50px;\n  }\n</style>` 
+                            }
+                        ]
+                    },
+                    {
+                        name: 'components',
+                        type: 'folder',
+                        expanded: false,
+                        children: [
+                            { 
+                                name: 'Button.ux', 
+                                type: 'file', 
+                                content: `<template>\n  <button class="btn">Click me</button>\n</template>\n\n<style>\n  .btn {\n    padding: 10px 20px;\n    background-color: #FF6B35;\n    color: white;\n    border-radius: 8px;\n  }\n</style>` 
+                            },
+                            { 
+                                name: 'Card.ux', 
+                                type: 'file', 
+                                content: `<template>\n  <div class="card">\n    <slot></slot>\n  </div>\n</template>\n\n<style>\n  .card {\n    background: #1A1A2E;\n    border-radius: 12px;\n    padding: 16px;\n  }\n</style>` 
+                            }
+                        ]
+                    }
+                ]
+            };
 
-        const projectStructure = {
-            name: 'pages',
-            type: 'folder',
-            expanded: true,
-            children: [
-                {
-                    name: 'index',
-                    type: 'folder',
-                    expanded: true,
-                    children: [
-                        { 
-                            name: 'index.ux', 
-                            type: 'file', 
-                            content: `<template>\n  <div class="page">\n    <text class="title">Hello World</text>\n  </div>\n</template>\n\n<style>\n  .page {\n    flex-direction: column;\n    justify-content: center;\n    align-items: center;\n    width: 100%;\n    height: 100%;\n    background-color: #000000;\n  }\n  .title {\n    font-size: 32px;\n    color: #ffffff;\n  }\n</style>\n\n<script>\n  export default {\n    data: {},\n    onInit() {\n      console.log('Index page loaded!')\n    }\n  }\n</script>` 
-                        }
-                    ]
-                }
-            ]
-        };
-
-        function renderFileTree(items, container, depth = 0) {
-            if (!items) return;
-            
-            const itemElement = document.createElement('div');
-            itemElement.className = 'file-tree-item';
-            itemElement.style.paddingLeft = `${depth * 20 + 8}px`;
-            
-            const icon = items.type === 'folder' ? (items.expanded ? '📂' : '📁') : '📄';
-            
-            itemElement.innerHTML = `
-                <span class="icon">${icon}</span>
-                <span>${items.name}</span>
-            `;
-            
-            if (items.type === 'folder') {
-                itemElement.addEventListener('click', (e) => {
-                    e.stopPropagation();
-                    items.expanded = !items.expanded;
-                    renderFullTree();
-                });
-            } else {
-                itemElement.addEventListener('click', () => {
-                    openFile(items);
-                });
+            // ---- RENDER TREE ----
+            function renderFileTree(items, container, depth = 0) {
+                if (!items) return;
                 
-                if (currentFile && currentFile.name === items.name) {
-                    itemElement.classList.add('active');
-                }
-            }
-            
-            container.appendChild(itemElement);
-            
-            if (items.type === 'folder' && items.expanded && items.children) {
-                const childrenContainer = document.createElement('div');
-                childrenContainer.className = 'file-tree-children';
-                container.appendChild(childrenContainer);
+                const itemElement = document.createElement('div');
+                itemElement.className = 'file-tree-item';
+                itemElement.style.paddingLeft = `${depth * 20 + 10}px`;
                 
-                items.children.forEach(child => {
-                    renderFileTree(child, childrenContainer, depth + 1);
-                });
-            }
-        }
-
-        function renderFullTree() {
-            const container = document.getElementById('fileTree');
-            container.innerHTML = '';
-            renderFileTree(projectStructure, container);
-        }
-
-        function openFile(file) {
-            if (isModified) {
-                if (!confirm('You have unsaved changes. Do you want to discard them?')) {
-                    return;
+                const icon = items.type === 'folder' ? (items.expanded ? '📂' : '📁') : '📄';
+                
+                itemElement.innerHTML = `
+                    <span class="icon">${icon}</span>
+                    <span>${items.name}</span>
+                `;
+                
+                if (items.type === 'folder') {
+                    itemElement.addEventListener('click', (e) => {
+                        e.stopPropagation();
+                        items.expanded = !items.expanded;
+                        renderFullTree();
+                    });
+                } else {
+                    itemElement.addEventListener('click', () => {
+                        openFile(items);
+                    });
+                    
+                    if (currentFile && currentFile === items) {
+                        itemElement.classList.add('active');
+                    }
+                }
+                
+                container.appendChild(itemElement);
+                
+                if (items.type === 'folder' && items.expanded && items.children) {
+                    const childrenContainer = document.createElement('div');
+                    childrenContainer.className = 'file-tree-children';
+                    container.appendChild(childrenContainer);
+                    
+                    items.children.forEach(child => {
+                        renderFileTree(child, childrenContainer, depth + 1);
+                    });
                 }
             }
-            
-            currentFile = file;
-            document.getElementById('codeEditor').value = file.content || '';
-            updateBreadcrumb(file);
-            isModified = false;
-            updateSaveStatus();
-            renderFullTree();
-        }
 
-        function updateBreadcrumb(file) {
-            const breadcrumb = document.getElementById('breadcrumb');
-            breadcrumb.innerHTML = `
-                <span class="breadcrumb-item">pages</span>
-                <span class="breadcrumb-separator">›</span>
-                <span class="breadcrumb-item">${file.name.replace('.ux', '')}</span>
-                <span class="breadcrumb-separator">›</span>
-                <span class="breadcrumb-item current">${file.name}</span>
-            `;
-        }
-
-        function updateSaveStatus() {
-            const dot = document.getElementById('saveStatus');
-            const text = document.getElementById('saveStatusText');
-            
-            if (isModified) {
-                dot.className = 'status-dot unsaved';
-                text.textContent = 'Unsaved changes';
-            } else {
-                dot.className = 'status-dot';
-                text.textContent = 'All changes saved';
+            function renderFullTree() {
+                const container = document.getElementById('fileTree');
+                container.innerHTML = '';
+                renderFileTree(projectStructure, container);
             }
-        }
 
-        function saveFile() {
-            if (currentFile) {
-                currentFile.content = document.getElementById('codeEditor').value;
+            // Helper to find file by name (useful for initial load)
+            function findFirstFile(node) {
+                if (node.type === 'file') return node;
+                if (node.children) {
+                    for (let child of node.children) {
+                        const found = findFirstFile(child);
+                        if (found) return found;
+                    }
+                }
+                return null;
+            }
+
+            function openFile(file) {
+                if (isModified) {
+                    if (!confirm('You have unsaved changes. Do you want to discard them?')) {
+                        return;
+                    }
+                }
+                
+                currentFile = file;
+                document.getElementById('codeEditor').value = file.content || '';
+                updateBreadcrumb(file);
                 isModified = false;
                 updateSaveStatus();
-                showToast('✅ File saved successfully');
+                renderFullTree();
             }
-        }
 
-        function buildProject() {
-            if (isModified) {
-                saveFile();
-            }
-            
-            showToast('🔨 Build started...');
-            
-            setTimeout(() => {
-                showToast('✅ Build complete! RPK generated');
-            }, 3000);
-        }
-
-        function showToast(message) {
-            const toast = document.createElement('div');
-            toast.className = 'toast toast-success';
-            toast.textContent = message;
-            document.body.appendChild(toast);
-            
-            setTimeout(() => {
-                toast.remove();
-            }, 2000);
-        }
-
-        // Initialize
-        document.addEventListener('DOMContentLoaded', () => {
-            renderFullTree();
-            
-            // Open first file
-            if (projectStructure.children[0]?.children[0]) {
-                openFile(projectStructure.children[0].children[0]);
-            }
-            
-            // Track changes
-            document.getElementById('codeEditor').addEventListener('input', () => {
-                isModified = true;
-                updateSaveStatus();
-            });
-            
-            // Keyboard shortcut for save
-            document.addEventListener('keydown', (e) => {
-                if ((e.ctrlKey || e.metaKey) && e.key === 's') {
-                    e.preventDefault();
-                    saveFile();
+            function updateBreadcrumb(file) {
+                const breadcrumb = document.getElementById('breadcrumb');
+                if (!file) {
+                    breadcrumb.innerHTML = `<span class="breadcrumb-item current">Select a file</span>`;
+                    return;
                 }
+                // Simple breadcrumb: root / filename
+                breadcrumb.innerHTML = `
+                    <span class="breadcrumb-item">pages</span>
+                    <span class="breadcrumb-separator">›</span>
+                    <span class="breadcrumb-item">${file.name.replace('.ux', '')}</span>
+                    <span class="breadcrumb-separator">›</span>
+                    <span class="breadcrumb-item current">${file.name}</span>
+                `;
+            }
+
+            function updateSaveStatus() {
+                const dot = document.getElementById('saveStatus');
+                const text = document.getElementById('saveStatusText');
+                
+                if (isModified) {
+                    dot.className = 'status-dot unsaved';
+                    text.textContent = 'Unsaved changes';
+                } else {
+                    dot.className = 'status-dot';
+                    text.textContent = 'All changes saved';
+                }
+            }
+
+            function saveFile() {
+                if (currentFile) {
+                    currentFile.content = document.getElementById('codeEditor').value;
+                    isModified = false;
+                    updateSaveStatus();
+                    showToast('✅ File saved successfully', 'toast-success');
+                } else {
+                    showToast('⚠️ No file selected', 'toast-build');
+                }
+            }
+
+            function buildProject() {
+                if (isModified) {
+                    saveFile(); // auto save before build
+                }
+                
+                if (buildInProgress) return;
+                buildInProgress = true;
+                
+                showToast('🔨 Build started... RPK generation', 'toast-build');
+                
+                setTimeout(() => {
+                    buildInProgress = false;
+                    showToast('✅ Build complete! RPK generated', 'toast-success');
+                }, 2500);
+            }
+
+            function showToast(message, className = 'toast-success') {
+                const existing = document.querySelector('.toast');
+                if (existing) existing.remove();
+                
+                const toast = document.createElement('div');
+                toast.className = `toast ${className}`;
+                toast.textContent = message;
+                document.body.appendChild(toast);
+                
+                setTimeout(() => {
+                    toast.remove();
+                }, 2200);
+            }
+
+            // ----- INITIALIZATION -----
+            document.addEventListener('DOMContentLoaded', () => {
+                renderFullTree();
+                
+                // Open first available file
+                const firstFile = findFirstFile(projectStructure);
+                if (firstFile) {
+                    openFile(firstFile);
+                } else {
+                    updateBreadcrumb(null);
+                }
+                
+                // Track changes in editor
+                document.getElementById('codeEditor').addEventListener('input', () => {
+                    if (!currentFile) return;
+                    if (document.getElementById('codeEditor').value !== currentFile.content) {
+                        isModified = true;
+                    } else {
+                        isModified = false;
+                    }
+                    updateSaveStatus();
+                });
+                
+                // Keyboard shortcut: Ctrl/Cmd + S
+                document.addEventListener('keydown', (e) => {
+                    if ((e.ctrlKey || e.metaKey) && e.key === 's') {
+                        e.preventDefault();
+                        saveFile();
+                    }
+                });
+                
+                // Optional: update line/col status (simplified, just show)
+                const editor = document.getElementById('codeEditor');
+                editor.addEventListener('click', updateCursorPosition);
+                editor.addEventListener('keyup', updateCursorPosition);
+                function updateCursorPosition() {
+                    const cursorPos = editor.selectionStart;
+                    const textBeforeCursor = editor.value.substring(0, cursorPos);
+                    const lines = textBeforeCursor.split('\n');
+                    const line = lines.length;
+                    const col = lines[lines.length - 1].length + 1;
+                    const statusSpan = document.querySelector('.status-bar .status-item:last-child span:last-child');
+                    if (statusSpan) {
+                        statusSpan.textContent = `Ln ${line}, Col ${col}`;
+                    }
+                }
+                // initial update
+                updateCursorPosition();
             });
-        });
+        })();
     </script>
 </body>
 </html>
