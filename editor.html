@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>VelaBuild - Editor</title>
+    <link rel="stylesheet" href="css/style.css">
+    <style>
+        body {
+            height: 100vh;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .header {
+            background: var(--bg-header);
+            border-bottom: 1px solid var(--border);
+            padding: 0 1.5rem;
+            height: 60px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-shrink: 0;
+            z-index: 100;
+        }
+
+        .header-left {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .header-subtitle {
+            color: var(--text-muted);
+            font-size: 0.9rem;
+            border-left: 1px solid var(--border);
+            padding-left: 1rem;
+        }
+
+        .header-right {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .main-container {
+            display: flex;
+            flex: 1;
+            overflow: hidden;
+        }
+
+        .sidebar {
+            background: var(--bg-sidebar);
+            border-right: 1px solid var(--border);
+            width: 250px;
+            min-width: 250px;
+            display: flex;
+            flex-direction: column;
+            overflow-y: auto;
+        }
+
+        .sidebar-header {
+            padding: 1rem;
+            border-bottom: 1px solid var(--border);
+            font-weight: 600;
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .file-tree {
+            padding: 0.5rem;
+            flex: 1;
+        }
+
+        .file-tree-item {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.5rem;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: all 0.2s;
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+            user-select: none;
+        }
+
+        .file-tree-item:hover {
+            background: var(--bg-hover);
+            color: var(--text-primary);
+        }
+
+        .file-tree-item.active {
+            background: rgba(255, 107, 53, 0.1);
+            color: var(--primary);
+            border-left: 2px solid var(--primary);
+        }
+
+        .file-tree-item .icon {
+            width: 20px;
+            text-align: center;
+            flex-shrink: 0;
+        }
+
+        .file-tree-children {
+            margin-left: 1.5rem;
+        }
+
+        .editor-area {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            background: var(--bg-dark);
+            min-width: 0;
+        }
+
+        .breadcrumb-bar {
+            background: var(--bg-header);
+            border-bottom: 1px solid var(--border);
+            padding: 0.5rem 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: 0.85rem;
+            color: var(--text-muted);
+            flex-shrink: 0;
+            overflow-x: auto;
+        }
+
+        .breadcrumb-item {
+            color: var(--text-secondary);
+            text-decoration: none;
+            transition: color 0.2s;
+            white-space: nowrap;
+        }
+
+        .breadcrumb-item:hover {
+            color: var(--primary);
+        }
+
+        .breadcrumb-item.current {
+            color: var(--primary);
+            font-weight: 500;
+        }
+
+        .breadcrumb-separator {
+            color: var(--text-muted);
+        }
+
+        .code-editor {
+            flex: 1;
+            padding: 1.5rem;
+            font-family: 'Monaco', 'Menlo', 'Ubuntu Mono', 'Consolas', monospace;
+            font-size: 14px;
+            line-height: 1.6;
+            color: #D4D4D4;
+            background: var(--bg-dark);
+            border: none;
+            resize: none;
+            outline: none;
+            white-space: pre;
+            overflow: auto;
+            tab-size: 2;
+        }
+
+        .status-bar {
+            background: var(--bg-header);
+            border-top: 1px solid var(--border);
+            padding: 0.5rem 1rem;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            font-size: 0.8rem;
+            color: var(--text-muted);
+            flex-shrink: 0;
+        }
+
+        .status-item {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .status-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: var(--success);
+        }
+
+        .status-dot.unsaved {
+            background: var(--warning);
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <div class="header">
+        <div class="header-left">
+            <a href="dashboard.html" class="logo">Vela<span>Build</span></a>
+            <span class="header-subtitle">UX compiler in the web</span>
+        </div>
+        <div class="header-right">
+            <button class="btn btn-secondary" onclick="editor.saveFile()">
+                💾 Save
+            </button>
+            <button class="btn btn-primary" onclick="editor.buildProject()">
+                🔨 Build & Deploy
+            </button>
+            <a href="dashboard.html" class="btn btn-secondary">Dashboard</a>
+        </div>
+    </div>
+
+    <!-- Main Container -->
+    <div class="main-container">
+        <!-- Sidebar -->
+        <div class="sidebar">
+            <div class="sidebar-header">Project Structure</div>
+            <div class="file-tree" id="fileTree"></div>
+        </div>
+
+        <!-- Editor Area -->
+        <div class="editor-area">
+            <!-- Breadcrumb -->
+            <div class="breadcrumb-bar" id="breadcrumb">
+                <span class="breadcrumb-item current">Select a file</span>
+            </div>
+
+            <!-- Code Editor -->
+            <textarea class="code-editor" id="codeEditor" spellcheck="false" placeholder="<UX CODE HERE>"></textarea>
+
+            <!-- Status Bar -->
+            <div class="status-bar">
+                <div class="status-item">
+                    <span class="status-dot" id="saveStatus"></span>
+                    <span id="saveStatusText">All changes saved</span>
+                </div>
+                <div class="status-item">
+                    <span>UX</span>
+                    <span>UTF-8</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="js/auth.js"></script>
+    <script src="js/editor.js"></script>
+    <script>
+        // Check authentication
+        if (!auth.isLoggedIn()) {
+            window.location.href = 'index.html';
+        }
+    </script>
+</body>
+</html>
