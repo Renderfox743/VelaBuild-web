@@ -4,12 +4,103 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>VelaBuild - Mi Band 9 Development Platform</title>
-    <link rel="stylesheet" href="css/style.css">
     <style>
+        :root {
+            --primary: #FF6B35;
+            --primary-dark: #E55A2B;
+            --bg-dark: #0A0A0F;
+            --bg-card: #14141F;
+            --bg-input: #1A1A2E;
+            --text-primary: #FFFFFF;
+            --text-secondary: #A0A0B8;
+            --text-muted: #6B6B80;
+            --border: #2A2A3E;
+            --success: #4CAF50;
+            --error: #f44336;
+            --warning: #FFC107;
+            --gradient: linear-gradient(135deg, #FF6B35 0%, #FF8F65 100%);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: var(--bg-dark);
+            color: var(--text-primary);
+            min-height: 100vh;
+        }
+
         .landing-page {
             display: flex;
             flex-direction: column;
             min-height: 100vh;
+        }
+
+        .navbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1.5rem 5%;
+            background: rgba(10, 10, 15, 0.9);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid var(--border);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .logo {
+            font-size: 1.8rem;
+            font-weight: bold;
+            color: var(--primary);
+            text-decoration: none;
+        }
+
+        .logo span {
+            color: var(--text-primary);
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 1rem;
+            align-items: center;
+        }
+
+        .btn {
+            padding: 0.75rem 1.5rem;
+            border-radius: 8px;
+            border: none;
+            cursor: pointer;
+            font-size: 0.95rem;
+            font-weight: 500;
+            transition: all 0.3s;
+            text-decoration: none;
+            display: inline-block;
+        }
+
+        .btn-primary {
+            background: var(--gradient);
+            color: white;
+            box-shadow: 0 4px 15px rgba(255, 107, 53, 0.3);
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(255, 107, 53, 0.4);
+        }
+
+        .btn-outline {
+            background: transparent;
+            color: var(--primary);
+            border: 2px solid var(--primary);
+        }
+
+        .btn-outline:hover {
+            background: rgba(255, 107, 53, 0.1);
         }
 
         .hero {
@@ -21,20 +112,6 @@
             text-align: center;
             padding: 6rem 5% 4rem;
             position: relative;
-            overflow: hidden;
-        }
-
-        .hero::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background: 
-                radial-gradient(circle at 20% 50%, rgba(255, 107, 53, 0.1) 0%, transparent 50%),
-                radial-gradient(circle at 80% 50%, rgba(255, 107, 53, 0.05) 0%, transparent 50%);
-            pointer-events: none;
         }
 
         .hero-badge {
@@ -56,7 +133,7 @@
         }
 
         .hero-title .highlight {
-            background: var(--gradient-primary);
+            background: var(--gradient);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             background-clip: text;
@@ -96,7 +173,7 @@
         .feature-card:hover {
             transform: translateY(-5px);
             border-color: var(--primary);
-            box-shadow: var(--shadow-lg);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
         }
 
         .feature-icon {
@@ -132,11 +209,11 @@
         .login-container {
             background: var(--bg-card);
             padding: 3rem;
-            border-radius: var(--radius-xl);
+            border-radius: 16px;
             width: 100%;
             max-width: 400px;
             border: 1px solid var(--border);
-            box-shadow: var(--shadow-xl);
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
         }
 
         .login-header {
@@ -156,6 +233,35 @@
             margin-top: 0.5rem;
         }
 
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-label {
+            display: block;
+            margin-bottom: 0.5rem;
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+            font-weight: 500;
+        }
+
+        .form-input {
+            width: 100%;
+            padding: 0.75rem 1rem;
+            background: var(--bg-input);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            color: var(--text-primary);
+            font-size: 1rem;
+            transition: all 0.3s;
+        }
+
+        .form-input:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(255, 107, 53, 0.1);
+        }
+
         .form-checkbox {
             display: flex;
             align-items: center;
@@ -172,10 +278,10 @@
         .btn-login {
             width: 100%;
             padding: 0.875rem;
-            background: var(--gradient-primary);
+            background: var(--gradient);
             color: white;
             border: none;
-            border-radius: var(--radius-md);
+            border-radius: 8px;
             font-size: 1rem;
             font-weight: 600;
             cursor: pointer;
@@ -198,6 +304,7 @@
             color: var(--primary);
             text-decoration: none;
             font-weight: 500;
+            cursor: pointer;
         }
 
         .login-footer a:hover {
@@ -208,7 +315,7 @@
             background: rgba(244, 67, 54, 0.1);
             color: var(--error);
             padding: 0.75rem;
-            border-radius: var(--radius-md);
+            border-radius: 8px;
             margin-bottom: 1rem;
             font-size: 0.9rem;
             display: none;
@@ -224,29 +331,49 @@
             left: 2rem;
             color: var(--text-secondary);
             text-decoration: none;
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-            transition: color 0.3s;
+            cursor: pointer;
         }
 
         .back-to-home:hover {
             color: var(--text-primary);
         }
 
+        .spinner {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            border: 3px solid rgba(255, 255, 255, 0.3);
+            border-radius: 50%;
+            border-top-color: #fff;
+            animation: spin 0.8s ease-in-out infinite;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .fade-in {
+            animation: fadeIn 0.3s ease-out;
+        }
+
         @media (max-width: 768px) {
             .hero-title {
                 font-size: 2.5rem;
             }
-            
             .hero-subtitle {
                 font-size: 1rem;
             }
-            
             .features {
                 grid-template-columns: 1fr;
             }
-            
+            .nav-links {
+                gap: 0.5rem;
+            }
             .login-container {
                 padding: 2rem;
             }
@@ -258,9 +385,7 @@
     <div id="landingPage" class="landing-page">
         <nav class="navbar">
             <a href="/" class="logo">Vela<span>Build</span></a>
-            <div style="display: flex; gap: 2rem; align-items: center;">
-                <a href="#features" style="color: var(--text-secondary); text-decoration: none;">Features</a>
-                <a href="#" style="color: var(--text-secondary); text-decoration: none;">Documentation</a>
+            <div class="nav-links">
                 <button class="btn btn-outline" onclick="showLogin()">Login</button>
                 <button class="btn btn-primary" onclick="showSignup()">Sign Up</button>
             </div>
@@ -285,7 +410,7 @@
                 </button>
             </div>
 
-            <div class="features" id="features">
+            <div class="features">
                 <div class="feature-card">
                     <div class="feature-icon">⚡</div>
                     <div class="feature-title">Lightning Fast</div>
@@ -318,11 +443,9 @@
         </div>
     </div>
 
-    <!-- Login Page -->
+    <!-- Login/Signup Page -->
     <div id="loginPage" class="login-page">
-        <a href="#" class="back-to-home" onclick="showLanding()">
-            ← Back to Home
-        </a>
+        <a class="back-to-home" onclick="showLanding()">← Back to Home</a>
         
         <div class="login-container fade-in">
             <div class="login-header">
@@ -332,7 +455,7 @@
 
             <div class="error-message" id="errorMessage"></div>
 
-            <form id="loginForm" onsubmit="handleAuth(event)">
+            <form id="authForm" onsubmit="handleAuth(event)">
                 <div class="form-group">
                     <label class="form-label" for="username">Username</label>
                     <input type="text" id="username" class="form-input" placeholder="Enter your username" required>
@@ -348,19 +471,17 @@
                     <label for="rememberMe">Remember me</label>
                 </div>
 
-                <button type="submit" class="btn-login" id="authButton">
-                    Login
-                </button>
+                <button type="submit" class="btn-login" id="authButton">Login</button>
             </form>
 
             <div class="login-footer">
-                <p id="loginFooter">Don't have an account? <a href="#" onclick="showSignup()">Sign up</a></p>
+                <p id="loginFooter">Don't have an account? <a onclick="showSignup()">Sign up</a></p>
             </div>
         </div>
     </div>
 
-    <script src="js/auth.js"></script>
     <script>
+        const API_URL = 'https://rdfxvelaapi.share.zrok.io';
         let isLoginMode = true;
 
         function showLogin() {
@@ -368,7 +489,7 @@
             document.getElementById('landingPage').style.display = 'none';
             document.getElementById('loginPage').classList.add('active');
             document.getElementById('loginSubtitle').textContent = 'Welcome back! Please login to continue.';
-            document.getElementById('loginFooter').innerHTML = 'Don\'t have an account? <a href="#" onclick="showSignup()">Sign up</a>';
+            document.getElementById('loginFooter').innerHTML = 'Don\'t have an account? <a onclick="showSignup()">Sign up</a>';
             document.getElementById('authButton').textContent = 'Login';
             clearError();
         }
@@ -378,7 +499,7 @@
             document.getElementById('landingPage').style.display = 'none';
             document.getElementById('loginPage').classList.add('active');
             document.getElementById('loginSubtitle').textContent = 'Create your account to get started.';
-            document.getElementById('loginFooter').innerHTML = 'Already have an account? <a href="#" onclick="showLogin()">Login</a>';
+            document.getElementById('loginFooter').innerHTML = 'Already have an account? <a onclick="showLogin()">Login</a>';
             document.getElementById('authButton').textContent = 'Sign Up';
             clearError();
         }
@@ -400,6 +521,27 @@
             errorElement.classList.remove('show');
         }
 
+        function validatePassword(password) {
+            if (password.length < 8) return 'Password must be at least 8 characters';
+            if (!/[A-Z]/.test(password)) return 'Password must contain at least one uppercase letter';
+            if (!/[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]/.test(password)) return 'Password must contain at least one symbol';
+            return null;
+        }
+
+        async function apiRequest(endpoint, data) {
+            const url = `${API_URL}${endpoint}`;
+            try {
+                const response = await fetch(url, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(data),
+                });
+                return await response.json();
+            } catch (error) {
+                return { success: false, error: 'Network error', log: error.message };
+            }
+        }
+
         async function handleAuth(event) {
             event.preventDefault();
             clearError();
@@ -419,7 +561,7 @@
                     return;
                 }
                 
-                const passwordError = auth.validatePassword(password);
+                const passwordError = validatePassword(password);
                 if (passwordError) {
                     showError(passwordError);
                     return;
@@ -431,12 +573,19 @@
             button.disabled = true;
             
             try {
-                const result = isLoginMode 
-                    ? await auth.login(username, password)
-                    : await auth.signup(username, password);
+                const endpoint = isLoginMode ? '/login' : '/signup';
+                const result = await apiRequest(endpoint, { username, password });
                 
                 if (result.success) {
-                    auth.saveSession(username, password, rememberMe);
+                    // Store session
+                    const session = {
+                        username,
+                        loggedAt: new Date().toISOString(),
+                        rememberPassword: rememberMe,
+                        password: rememberMe ? password : null
+                    };
+                    localStorage.setItem('velabuild_session', JSON.stringify(session));
+                    
                     showError(isLoginMode ? 'Login successful! Redirecting...' : 'Account created! Redirecting...');
                     setTimeout(() => {
                         window.location.href = 'dashboard.html';
@@ -454,7 +603,8 @@
 
         // Check for existing session
         document.addEventListener('DOMContentLoaded', () => {
-            if (auth.isLoggedIn()) {
+            const session = localStorage.getItem('velabuild_session');
+            if (session) {
                 window.location.href = 'dashboard.html';
             }
         });
